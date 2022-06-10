@@ -14,6 +14,7 @@ Write an app that:
 
 - Create as many files as you need
 - Create or organize the express project as you want, if you want to organize it diferently please explain why
+    > All the features i created use single responsibility principle.
 - Create a better UI for the view we already have, make sure you're following UX/UI standards
 - Create validations along the form, to make sure people is not entry invalid data
 - Keep using [bootstrap v5](https://getbootstrap.com/docs/5.0/getting-started/introduction/) on the UI
@@ -27,3 +28,25 @@ Write an app that:
 - Maintainability: How flexible is the code?
 - Testability: Is it easy to test the code? Please demonstrate with unit tests.
 - Use DRY, KISS and SOLID responsibly to find the sweet spot between an under-engineering and over-engineering.
+
+
+## To RUN Locally
+Install dependencies
+```
+npm install
+````
+
+Seed the DB
+```
+npm run seed
+````
+
+To Run the Test cases
+```
+npm run test
+````
+
+To start the service
+```
+npm run start
+````

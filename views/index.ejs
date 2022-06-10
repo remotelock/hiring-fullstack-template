@@ -14,16 +14,67 @@
   <h1>
     <%= title %>
   </h1>
-  <p>Welcome to the <%= title %>
-  </p>
+  <p>Welcome to the <%= title %></p>
 
-  <div class="container">
+  <div class="container mt-3">
     <h3>Search for a lock</h3>
-    <div class="mb-3">
-      <input type="name" class="form-control" id="name" placeholder="Lock name">
+    <div class="input-group mb-3">
+      <input type="name" class="form-control" id="name" placeholder="Enter a Lock Name" aria-label="Enter a Lock Name" aria-describedby="search-input"
+      onkeyup="search()">
+      <button type="button" class="btn btn-primary" onclick="search()">Search</button>
     </div>
-    <button type="button" class="btn btn-primary">Search</button>
+  </div>
+
+  <h1> Locks</h1>
+  <div id="results" class="card-group mx-auto">
   </div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+<script>
+  async function search() {
+    let name = $("#name").val();
+    let resp = await fetch(`/device?` + new URLSearchParams({name}), {
+      "method": "GET",
+    });
 
+
+    let results = document.createDocumentFragment();
+    let data = await resp.json();
+    if(data && data.length) {
+      for (record of data) {
+        let singleLock = document.createElement('div')
+        singleLock.innerHTML = `
+          <div class="card m-2">
+            <div class="card-body p-0">
+              <div class="card-header">
+                <h5 class="card-title">${record.name}</h5>
+              </div>
+              <div class="card-text d-grid gap-2 p-3">
+                <span><b>Power Source</b> ${record.power_source}</span>
+                <span><b>Firmware </b>${record.firmware_version}</span>
+                <span><b>Serial Number </b>${record.serial_number}</span>
+                <span><b>Code</b> ${record.programming_code}</span>
+                <span><b>State</b>${record.state}</span>
+                <span><b>Model Number</b> ${record.model_number}</span>
+              </div>
+            </div>
+          </div>
+      `
+        results.appendChild(singleLock);
+      }
+    } else {
+      let noData = document.createElement('div')
+        noData.innerHTML = `
+          <div class="alert alert-dark" role="alert">
+            No Locks Found!!
+          </div>
+      `
+      results.appendChild(noData);
+    }
+    
+    const element = document.getElementById("results")
+    element.replaceChildren(results);
+  }
+  search()
+</script>
 </html>
